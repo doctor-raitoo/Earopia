@@ -30,7 +30,11 @@ class AuthController extends BaseController
                     'logged_in' => true
                 ]);
 
-                return redirect()->to('/produk');
+                if ($user['role'] == 'admin') {
+                    return redirect()->to('/admin/dashboard');
+                } else {
+                    return redirect()->to('/produk');
+                }
             }
         }
 
@@ -55,7 +59,7 @@ class AuthController extends BaseController
         $data = [
             'username' => $this->request->getPost('username'),
             'email' => $this->request->getPost('email'),
-            'password' => $this->request->getPost('password'), // tanpa hash
+            'password' => $this->request->getPost('password'),
             'role' => 'user',
             'status' => 'active'
         ];

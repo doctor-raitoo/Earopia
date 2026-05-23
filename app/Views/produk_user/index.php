@@ -61,6 +61,9 @@
         transition: all 0.3s ease;
         cursor: pointer;
         position: relative;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
     }
 
     .produk-card:hover {
@@ -78,6 +81,7 @@
         justify-content: center;
         overflow: hidden;
         position: relative;
+        flex-shrink: 0;
     }
 
     .produk-gambar img {
@@ -115,18 +119,26 @@
 
     .produk-info {
         padding: 20px;
+        display: flex;
+        flex-direction: column;
+        flex: 1;
     }
 
     .produk-nama {
-        font-size: 20px;
+        font-size: 18px;
         font-weight: 700;
         color: #0a2a3a;
         margin-bottom: 10px;
         line-height: 1.3;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        min-height: 48px;
     }
 
     .produk-harga {
-        font-size: 24px;
+        font-size: 22px;
         font-weight: 800;
         color: #00a8ff;
         margin: 10px 0;
@@ -147,20 +159,22 @@
         -webkit-line-clamp: 2;
         -webkit-box-orient: vertical;
         overflow: hidden;
+        min-height: 42px;
     }
 
     .produk-actions {
         display: flex;
         gap: 10px;
-        margin-top: 15px;
+        margin-top: auto;
+        padding-top: 15px;
     }
 
     .btn-cart {
-        flex: 1;
+        width: 100%;
         background: linear-gradient(135deg, #00a8ff 0%, #0088cc 100%);
         color: white;
         border: none;
-        padding: 10px 15px;
+        padding: 12px 15px;
         border-radius: 8px;
         font-weight: 600;
         cursor: pointer;
@@ -180,27 +194,7 @@
     .btn-cart:disabled {
         opacity: 0.5;
         cursor: not-allowed;
-    }
-
-    .btn-detail {
-        background: transparent;
-        border: 1.5px solid #00a8ff;
-        color: #00a8ff;
-        padding: 10px 15px;
-        border-radius: 8px;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.2s ease;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 8px;
-        text-decoration: none;
-    }
-
-    .btn-detail:hover {
-        background: #00a8ff;
-        color: white;
+        transform: none;
     }
 
     .empty-produk {
@@ -233,11 +227,17 @@
         }
         
         .produk-nama {
-            font-size: 18px;
+            font-size: 16px;
+            min-height: 42px;
         }
         
         .produk-harga {
-            font-size: 20px;
+            font-size: 18px;
+        }
+        
+        .produk-deskripsi {
+            font-size: 13px;
+            min-height: 38px;
         }
     }
 
@@ -257,7 +257,7 @@
     }
 
     .produk-actions form {
-        flex: 1;
+        width: 100%;
     }
 
     .kategori-filter {
@@ -389,7 +389,7 @@
             </div>
         <?php else: ?>
             <?php foreach ($produk as $p): ?>
-                <div class="produk-card">
+                <div class="produk-card" onclick="window.location.href='/produk/<?= $p['id_produk']; ?>'">
                     <div class="produk-gambar">
                         <?php if ($p['gambar'] && file_exists(FCPATH . 'uploads/' . $p['gambar'])): ?>
                             <img src="/uploads/<?= $p['gambar']; ?>" alt="<?= esc($p['nama_produk']); ?>">
@@ -414,7 +414,7 @@
                         <div class="produk-deskripsi">
                             <?= esc($p['deskripsi']); ?>
                         </div>
-                        <div class="produk-actions">
+                        <div class="produk-actions" onclick="event.stopPropagation()">
                             <form action="/cart/add" method="post">
                                 <input type="hidden" name="id_produk" value="<?= $p['id_produk']; ?>">
                                 <input type="hidden" name="qty" value="1">
@@ -423,11 +423,6 @@
                                     Add to Cart
                                 </button>
                             </form>
-
-                            <a href="/produk/<?= $p['id_produk']; ?>" class="btn-detail">
-                                Detail
-                            </a>
-
                         </div>
                     </div>
                 </div>
