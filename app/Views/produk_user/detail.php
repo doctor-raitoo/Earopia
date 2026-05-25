@@ -160,6 +160,42 @@
         font-size: 15px;
     }
 
+    .description-preview {
+        display: block;
+    }
+
+    .description-full {
+        display: none;
+    }
+
+    .description-full.show {
+        display: block;
+    }
+
+    .description-preview.hide {
+        display: none;
+    }
+
+    .btn-read-more {
+        background: transparent;
+        color: #00a8ff;
+        border: none;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        margin-top: 10px;
+        padding: 5px 0;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        transition: color 0.2s;
+    }
+
+    .btn-read-more:hover {
+        color: #0088cc;
+        text-decoration: underline;
+    }
+
     .product-actions {
         display: flex;
         gap: 15px;
@@ -281,6 +317,13 @@
     }
 </style>
 
+<?php
+$fullDescription = $produk['deskripsi'];
+$previewLength = 200;
+$previewDescription = strlen($fullDescription) > $previewLength ? substr($fullDescription, 0, $previewLength) . '...' : $fullDescription;
+$hasMore = strlen($fullDescription) > $previewLength;
+?>
+
 <?php if (session()->getFlashdata('success')): ?>
     <div style="background:#00a8ff; color:white; padding:12px 20px; margin:20px auto; max-width:1200px; border-radius:12px;">
         ✔ <?= session()->getFlashdata('success'); ?>
@@ -330,7 +373,22 @@
             
             <div class="product-description">
                 <h3>Deskripsi Produk</h3>
-                <p><?= nl2br(esc($produk['deskripsi'])); ?></p>
+                
+                <div class="description-preview" id="descPreview">
+                    <p><?= nl2br(esc($previewDescription)); ?></p>
+                    <?php if ($hasMore): ?>
+                        <button class="btn-read-more" onclick="toggleDescription()">
+                            Lihat Selengkapnya →
+                        </button>
+                    <?php endif; ?>
+                </div>
+                
+                <div class="description-full" id="descFull">
+                    <p><?= nl2br(esc($fullDescription)); ?></p>
+                    <button class="btn-read-more" onclick="toggleDescription()">
+                        ← Sembunyikan
+                    </button>
+                </div>
             </div>
             
             <div class="product-actions">
@@ -359,6 +417,19 @@
 </div>
 
 <script>
+    function toggleDescription() {
+        let preview = document.getElementById('descPreview');
+        let full = document.getElementById('descFull');
+        
+        if (preview.style.display === 'none') {
+            preview.style.display = 'block';
+            full.style.display = 'none';
+        } else {
+            preview.style.display = 'none';
+            full.style.display = 'block';
+        }
+    }
+
     document.querySelectorAll('.qty-minus').forEach(btn => {
         btn.addEventListener('click', function() {
             let input = this.closest('.qty-selector').querySelector('.qty-input');

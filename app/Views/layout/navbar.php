@@ -178,7 +178,7 @@
 
 <div class="navbar">
     <div class="logo">
-        <img src="<?= base_url('uploads/logo1.png') ?>" alt="Earopia Logo">
+        <img src="<?= base_url('uploads/logo.png') ?>" alt="Earopia Logo">
     </div>
 
     <div class="menu">
@@ -198,7 +198,7 @@
         </a>
 
         <a href="/transaksi-saya" class="<?= strpos($currentUrl, '/transaksi-saya') !== false || strpos($currentUrl, '/invoice') !== false ? 'active' : '' ?>">
-            <i class="fas fa-file-invoice"></i> Transaksi Saya
+            <i class="fas fa-file-invoice"></i> Riwayat Transaksi
         </a>
 
         <?php if (session()->get('logged_in')): ?>

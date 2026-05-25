@@ -33,7 +33,7 @@ class AuthController extends BaseController
                 if ($user['role'] == 'admin') {
                     return redirect()->to('/admin/dashboard');
                 } else {
-                    return redirect()->to('/produk');
+                    return redirect()->to('/');
                 }
             }
         }

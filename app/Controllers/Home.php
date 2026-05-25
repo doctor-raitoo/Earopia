@@ -9,10 +9,12 @@ class Home extends BaseController
         $db = \Config\Database::connect();
 
         $produk = $db->table('produk')
-            ->orderBy('id_produk', 'DESC')
-            ->limit(6)
-            ->get()
-            ->getResultArray();
+        ->select('produk.*, kategori.nama_kategori')
+        ->join('kategori', 'kategori.id_kategori = produk.id_kategori')
+        ->orderBy('id_produk', 'DESC')
+        ->limit(8)
+        ->get()
+        ->getResultArray();
 
         return view('home/index', [
             'produk' => $produk

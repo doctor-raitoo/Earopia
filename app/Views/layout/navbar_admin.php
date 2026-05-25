@@ -29,19 +29,15 @@
         gap: 12px;
     }
 
-    .logo-area i {
-        font-size: 28px;
-        color: #00a8ff;
+    .logo-area img {
+        height: 45px;
+        width: auto;
+        object-fit: contain;
+        transition: transform 0.2s ease;
     }
 
-    .logo-area strong {
-        color: white;
-        font-size: 20px;
-        font-weight: 700;
-    }
-
-    .logo-area strong span {
-        color: #00a8ff;
+    .logo-area img:hover {
+        transform: scale(1.05);
     }
 
     .nav-links {
@@ -99,7 +95,6 @@
         padding: 8px 18px;
     }
 
-
     @media (max-width: 768px) {
         .navbar {
             padding: 12px 20px;
@@ -112,6 +107,10 @@
             justify-content: center;
             gap: 15px;
         }
+        
+        .logo-area img {
+            height: 35px;
+        }
     }
 </style>
 
@@ -119,8 +118,7 @@
 
 <div class="navbar">
     <div class="logo-area">
-        <i class="fas fa-store"></i>
-        <strong>Earopia <span>Admin</span></strong>
+        <img src="<?= base_url('uploads/logo.png'); ?>" alt="Earopia Logo">
     </div>
 
     <div class="nav-links">
