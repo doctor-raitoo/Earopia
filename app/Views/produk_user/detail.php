@@ -74,19 +74,19 @@
 
     .product-gallery {
         background: linear-gradient(135deg, #d4e4f0 0%, #b8d4e8 100%);
-        padding: 40px;
+        padding: 0;
         display: flex;
         align-items: center;
         justify-content: center;
         position: relative;
+        min-height: 400px;
     }
 
     .product-gallery img {
         width: 100%;
-        max-width: 400px;
-        height: auto;
-        object-fit: contain;
-        border-radius: 16px;
+        height: 100%;
+        object-fit: cover;
+        display: block;
     }
 
     .product-info {
@@ -195,12 +195,14 @@
         border-color: #00a8ff;
     }
 
-    .qty-selector span {
-        font-size: 18px;
-        font-weight: 600;
-        color: #0a2a3a;
-        min-width: 30px;
+    .qty-selector input {
+        width: 50px;
         text-align: center;
+        border: none;
+        background: transparent;
+        font-weight: 600;
+        font-size: 16px;
+        outline: none;
     }
 
     .btn-add-cart {
@@ -237,7 +239,7 @@
         }
         
         .product-gallery {
-            padding: 30px;
+            min-height: 300px;
         }
         
         .product-info {
@@ -303,7 +305,7 @@
             <?php if ($produk['gambar'] && file_exists(FCPATH . 'uploads/' . $produk['gambar'])): ?>
                 <img src="/uploads/<?= $produk['gambar']; ?>" alt="<?= esc($produk['nama_produk']); ?>">
             <?php else: ?>
-                <img src="https://placehold.co/500x500/00a8ff/ffffff?text=No+Image" alt="No Image">
+                <img src="https://placehold.co/600x500/00a8ff/ffffff?text=No+Image" alt="No Image">
             <?php endif; ?>
         </div>
 
@@ -320,9 +322,9 @@
             
             <div class="product-stock">
                 <?php if ($produk['stok'] > 0): ?>
-                    <span class="stock-tersedia">✔ Stok Tersedia: <?= $produk['stok']; ?> unit</span>
+                    <span class="stock-tersedia">Stok Tersedia: <?= $produk['stok']; ?> unit</span>
                 <?php else: ?>
-                    <span class="stock-habis">X Stok Habis</span>
+                    <span class="stock-habis">Stok Produk Sedang Habis</span>
                 <?php endif; ?>
             </div>
             
@@ -337,9 +339,9 @@
                         <input type="hidden" name="id_produk" value="<?= $produk['id_produk']; ?>">
                         
                         <div class="qty-selector">
-                            <button type="button" onclick="this.nextElementSibling.stepDown(); this.nextElementSibling.dispatchEvent(new Event('change'))">−</button>
-                            <input type="number" name="qty" value="1" min="1" max="<?= $produk['stok']; ?>" style="width: 50px; text-align: center; border: none; background: transparent; font-weight: 600; font-size: 16px;" onchange="if(this.value < 1) this.value = 1; if(this.value > <?= $produk['stok']; ?>) this.value = <?= $produk['stok']; ?>">
-                            <button type="button" onclick="this.previousElementSibling.stepUp(); this.previousElementSibling.dispatchEvent(new Event('change'))">+</button>
+                            <button type="button" class="qty-minus">−</button>
+                            <input type="number" name="qty" class="qty-input" value="1" min="1" max="<?= $produk['stok']; ?>">
+                            <button type="button" class="qty-plus">+</button>
                         </div>
                         
                         <button type="submit" class="btn-add-cart">
@@ -348,10 +350,36 @@
                     </form>
                 <?php else: ?>
                     <button class="btn-add-cart" disabled>
-                        X Stok Habis
+                        Stok Produk Sedang Habis
                     </button>
                 <?php endif; ?>
             </div>
         </div>
     </div>
 </div>
+
+<script>
+    document.querySelectorAll('.qty-minus').forEach(btn => {
+        btn.addEventListener('click', function() {
+            let input = this.closest('.qty-selector').querySelector('.qty-input');
+            let value = parseInt(input.value) - 1;
+            let min = parseInt(input.min) || 1;
+            if (value >= min) {
+                input.value = value;
+                input.dispatchEvent(new Event('change'));
+            }
+        });
+    });
+
+    document.querySelectorAll('.qty-plus').forEach(btn => {
+        btn.addEventListener('click', function() {
+            let input = this.closest('.qty-selector').querySelector('.qty-input');
+            let value = parseInt(input.value) + 1;
+            let max = parseInt(input.max);
+            if (!max || value <= max) {
+                input.value = value;
+                input.dispatchEvent(new Event('change'));
+            }
+        });
+    });
+</script>

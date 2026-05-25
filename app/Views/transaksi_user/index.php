@@ -91,7 +91,7 @@
         color: #dc2626;
     }
 
-    .status-barang {
+    .status-barang-diproses {
         display: inline-block;
         padding: 5px 12px;
         border-radius: 20px;
@@ -99,6 +99,26 @@
         font-weight: 600;
         background: #e0eef5;
         color: #0a2a3a;
+    }
+
+    .status-barang-dikirim {
+        display: inline-block;
+        padding: 5px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+        background: #fef3c7;
+        color: #d97706;
+    }
+
+    .status-barang-diterima {
+        display: inline-block;
+        padding: 5px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+        background: #d1fae5;
+        color: #059669;
     }
 
     .action-buttons {
@@ -195,30 +215,47 @@
                 </tr>
             <?php else: ?>
                 <?php foreach ($transaksi as $t): ?>
-                <tr>
-                    <td><strong><?= $t['id_transaksi']; ?></strong></td>
-                    <td>Rp <?= number_format($t['total'],0,',','.'); ?></td>
-                    <td>
-                        <span class="status-badge status-<?= $t['status']; ?>">
-                            <?= $t['status']; ?>
-                        </span>
-                    </td>
-                    <td>
-                        <span class="status-barang">
-                            <?= $t['status_barang']; ?>
-                        </span>
-                    </td>
-                    <td>
-                        <div class="action-buttons">
-                            <a href="/transaksi-saya/detail/<?= $t['id_transaksi']; ?>" class="btn-detail">
-                                <i class="fas fa-eye"></i> Detail
-                            </a>
-                            <a href="/invoice/<?= $t['id_transaksi']; ?>" class="btn-invoice">
-                                <i class="fas fa-file-pdf"></i> Invoice
-                            </a>
-                        </div>
-                    </td>
-                </tr>
+                    <?php
+                    $statusBarangClass = '';
+                    $statusBarangLabel = '';
+                    if ($t['status_barang'] == 'diproses') {
+                        $statusBarangClass = 'status-barang-diproses';
+                        $statusBarangLabel = 'Diproses';
+                    } elseif ($t['status_barang'] == 'dikirim') {
+                        $statusBarangClass = 'status-barang-dikirim';
+                        $statusBarangLabel = 'Sedang Dikirim';
+                    } elseif ($t['status_barang'] == 'diterima') {
+                        $statusBarangClass = 'status-barang-diterima';
+                        $statusBarangLabel = 'Diterima Dan Selesai';
+                    } else {
+                        $statusBarangClass = 'status-barang-diproses';
+                        $statusBarangLabel = ucfirst($t['status_barang']);
+                    }
+                    ?>
+                    <tr>
+                        <td><strong><?= $t['id_transaksi']; ?></strong></td>
+                        <td>Rp <?= number_format($t['total'],0,',','.'); ?></td>
+                        <td>
+                            <span class="status-badge status-<?= $t['status']; ?>">
+                                <?= $t['status']; ?>
+                            </span>
+                        </td>
+                        <td>
+                            <span class="<?= $statusBarangClass; ?>">
+                                <?= $statusBarangLabel; ?>
+                            </span>
+                        </td>
+                        <td>
+                            <div class="action-buttons">
+                                <a href="/transaksi-saya/detail/<?= $t['id_transaksi']; ?>" class="btn-detail">
+                                    <i class="fas fa-eye"></i> Detail
+                                </a>
+                                <a href="/invoice/<?= $t['id_transaksi']; ?>" class="btn-invoice">
+                                    <i class="fas fa-file-pdf"></i> Invoice
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
                 <?php endforeach; ?>
             <?php endif; ?>
         </tbody>

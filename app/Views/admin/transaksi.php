@@ -97,7 +97,7 @@
         color: #dc2626;
     }
 
-    .status-barang {
+    .status-barang-diproses {
         display: inline-block;
         padding: 5px 12px;
         border-radius: 20px;
@@ -105,6 +105,26 @@
         font-weight: 600;
         background: #e0eef5;
         color: #0a2a3a;
+    }
+
+    .status-barang-dikirim {
+        display: inline-block;
+        padding: 5px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+        background: #fef3c7;
+        color: #d97706;
+    }
+
+    .status-barang-diterima {
+        display: inline-block;
+        padding: 5px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+        background: #d1fae5;
+        color: #059669;
     }
 
     .bukti-img {
@@ -278,8 +298,25 @@
                     </span>
                 </td>
                 <td style="text-align: center;">
-                    <span class="status-barang">
-                        <?= $t['status_barang']; ?>
+                    <?php
+                    $statusClass = '';
+                    $statusLabel = '';
+                    if ($t['status_barang'] == 'diproses') {
+                        $statusClass = 'status-barang-diproses';
+                        $statusLabel = 'Diproses';
+                    } elseif ($t['status_barang'] == 'dikirim') {
+                        $statusClass = 'status-barang-dikirim';
+                        $statusLabel = 'Sedang Dikirim';
+                    } elseif ($t['status_barang'] == 'diterima') {
+                        $statusClass = 'status-barang-diterima';
+                        $statusLabel = 'Diterima dan Selesai';
+                    } else {
+                        $statusClass = 'status-barang-diproses';
+                        $statusLabel = $t['status_barang'];
+                    }
+                    ?>
+                    <span class="<?= $statusClass; ?>">
+                        <?= $statusLabel; ?>
                     </span>
                 </td>
                 <td style="text-align: center;">
@@ -304,7 +341,7 @@
                             <a href="/admin/status-barang/<?= $t['id_transaksi']; ?>/diproses">
                                 <i class="fas fa-box"></i> Diproses
                             </a>
-                            <a href="/admin/status-barang/<?= $t['id_transaksi']; ?>/sedang dikirim">
+                            <a href="/admin/status-barang/<?= $t['id_transaksi']; ?>/dikirim">
                                 <i class="fas fa-truck"></i> Kirim
                             </a>
                             <a href="/admin/status-barang/<?= $t['id_transaksi']; ?>/diterima">
@@ -313,7 +350,7 @@
                         </div>
                     </div>
                 </td>
-                <td>
+                <td style="text-align: center;">
                     <a href="/admin/transaksi/detail/<?= $t['id_transaksi']; ?>" class="btn-detail">
                         <i class="fas fa-eye"></i> Detail
                     </a>

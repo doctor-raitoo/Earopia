@@ -335,13 +335,13 @@
 
 <?php if (session()->getFlashdata('success')): ?>
     <div style="background:#00a8ff; color:white; padding:10px; margin:20px; border-radius:8px;">
-        ✔ <?= session()->getFlashdata('success'); ?>
+        <?= session()->getFlashdata('success'); ?>
     </div>
 <?php endif; ?>
 
 <div class="produk-container">
     <div class="page-header">
-        <h1><span>Daftar Produk</span> Earopia</h1>
+        <h1><span>Daftar Produk</span></h1>
         <p>Temukan koleksi headphone terbaik dengan kualitas suara premium</p>
     </div>
 

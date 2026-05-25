@@ -6,14 +6,42 @@ use App\Models\TransaksiModel;
 
 class AdminController extends BaseController
 {
-
     public function dashboard()
     {
         if (session()->get('role') != 'admin') {
             return redirect()->to('/produk');
         }
 
-        return view('admin/dashboard');
+        $transaksiModel = new \App\Models\TransaksiModel();
+        $produkModel = new \App\Models\ProdukModel();
+        $userModel = new \App\Models\UserModel();
+
+        $totalTransaksi = $transaksiModel->countAll();
+
+        $totalPendapatan = $transaksiModel
+            ->selectSum('total')
+            ->where('status', 'dibayar')
+            ->first()['total'] ?? 0;
+
+        $totalProduk = $produkModel->countAll();
+
+        $totalUser = $userModel
+            ->where('role', 'user')
+            ->countAllResults();
+
+        $grafik = $transaksiModel
+            ->select("DATE(tanggal) as tgl, COUNT(*) as jumlah")
+            ->groupBy("DATE(tanggal)")
+            ->orderBy("tgl", "ASC")
+            ->findAll();
+
+        return view('admin/dashboard', [
+            'totalTransaksi' => $totalTransaksi,
+            'totalPendapatan' => $totalPendapatan,
+            'totalProduk' => $totalProduk,
+            'totalUser' => $totalUser,
+            'grafik' => $grafik
+        ]);
     }
     public function transaksi()
     {

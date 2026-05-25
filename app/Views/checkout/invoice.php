@@ -47,6 +47,34 @@ body {
     padding: 30px;
 }
 
+.top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.btn-back {
+    background: transparent;
+    border: 1.5px solid #00a8ff;
+    color: #00a8ff;
+    padding: 8px 20px;
+    border-radius: 40px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+}
+
+.btn-back:hover {
+    background: #00a8ff;
+    color: white;
+}
+
 .info-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -190,6 +218,14 @@ body {
         display: none;
     }
     
+    .btn-back {
+        display: none;
+    }
+    
+    .top-bar {
+        display: none;
+    }
+    
     .invoice-container {
         margin: 0;
         box-shadow: none;
@@ -226,6 +262,12 @@ body {
     .total-section h3 {
         font-size: 20px;
     }
+    
+    .top-bar {
+        flex-direction: column;
+        gap: 15px;
+        align-items: flex-start;
+    }
 }
 </style>
 
@@ -236,6 +278,13 @@ body {
     </div>
 
     <div class="invoice-body">
+        <div class="top-bar">
+            <div></div>
+            <a href="/transaksi-saya" class="btn-back">
+                ← Kembali
+            </a>
+        </div>
+
         <div class="info-grid">
             <div class="info-item">
                 <span class="info-label">Tanggal</span>

@@ -39,6 +39,77 @@
         padding: 30px;
     }
 
+    .tracking {
+        display: flex;
+        justify-content: space-between;
+        margin: 25px 0 30px;
+        position: relative;
+    }
+
+    .tracking::before {
+        content: '';
+        position: absolute;
+        top: 20px;
+        left: 0;
+        width: 100%;
+        height: 4px;
+        background: #e0eef5;
+        z-index: 0;
+    }
+
+    .step {
+        position: relative;
+        z-index: 1;
+        text-align: center;
+        width: 100%;
+    }
+
+    .circle {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: #ccc;
+        margin: 0 auto;
+        line-height: 40px;
+        color: white;
+        font-weight: bold;
+        transition: 0.3s;
+    }
+
+    .active .circle {
+        background: #00a8ff;
+        box-shadow: 0 0 0 4px rgba(0, 168, 255, 0.2);
+    }
+
+    .done .circle {
+        background: #28a745;
+    }
+
+    .label {
+        margin-top: 8px;
+        font-size: 12px;
+        font-weight: 600;
+        color: #6a8a9a;
+    }
+
+    .done .label {
+        color: #28a745;
+    }
+
+    .active .label {
+        color: #00a8ff;
+    }
+
+    .tracking-status-text {
+        margin-bottom: 30px;
+        padding: 12px 16px;
+        background: #f0f7fc;
+        border-radius: 12px;
+        text-align: center;
+        font-weight: 700;
+        color: #00a8ff;
+    }
+
     .info-grid {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
@@ -91,7 +162,7 @@
         color: #dc2626;
     }
 
-    .status-barang {
+    .status-barang-diproses {
         display: inline-block;
         padding: 5px 12px;
         border-radius: 20px;
@@ -101,9 +172,28 @@
         color: #0a2a3a;
     }
 
+    .status-barang-dikirim {
+        display: inline-block;
+        padding: 5px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+        background: #fef3c7;
+        color: #d97706;
+    }
+
+    .status-barang-diterima {
+        display: inline-block;
+        padding: 5px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+        background: #d1fae5;
+        color: #059669;
+    }
+
     .detail-table {
         width: 100%;
-        background: white;
         border-collapse: collapse;
         margin-top: 20px;
     }
@@ -132,14 +222,12 @@
         color: #00a8ff;
         padding: 10px 24px;
         border-radius: 40px;
-        font-weight: 600;
-        cursor: pointer;
         text-decoration: none;
+        margin-top: 30px;
         display: inline-flex;
         align-items: center;
         gap: 8px;
         transition: all 0.2s;
-        margin-top: 30px;
     }
 
     .btn-back:hover {
@@ -148,10 +236,6 @@
     }
 
     @media (max-width: 768px) {
-        .detail-container {
-            margin: 20px auto;
-        }
-        
         .detail-body {
             padding: 20px;
         }
@@ -161,13 +245,58 @@
             gap: 12px;
         }
         
-        .detail-header h2 {
-            font-size: 20px;
+        .tracking {
+            margin: 15px 0 20px;
+        }
+        
+        .circle {
+            width: 32px;
+            height: 32px;
+            line-height: 32px;
+            font-size: 12px;
+        }
+        
+        .tracking::before {
+            top: 16px;
+        }
+        
+        .label {
+            font-size: 10px;
         }
     }
 </style>
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<?php
+$statusBarang = $transaksi['status_barang'];
+
+$step = [
+    'diproses' => 1,
+    'dikirim' => 2,
+    'diterima' => 3
+];
+
+$currentStep = $step[$statusBarang] ?? 1;
+
+$statusText = [
+    'diproses' => 'Pesanan sedang diproses oleh admin',
+    'dikirim' => 'Pesanan sedang dalam perjalanan',
+    'diterima' => 'Pesanan telah diterima'
+];
+
+$statusClassMap = [
+    'diproses' => 'status-barang-diproses',
+    'dikirim' => 'status-barang-dikirim',
+    'diterima' => 'status-barang-diterima'
+];
+
+$statusLabelMap = [
+    'diproses' => 'Diproses',
+    'dikirim' => 'Sedang Dikirim',
+    'diterima' => 'Diterima dan Selesai'
+];
+?>
 
 <div class="detail-container">
     <div class="detail-card">
@@ -176,17 +305,38 @@
         </div>
 
         <div class="detail-body">
+            <div class="tracking">
+                <div class="step <?= $currentStep >= 1 ? 'done' : ''; ?>">
+                    <div class="circle">1</div>
+                    <div class="label">Pesanan Diproses</div>
+                </div>
+
+                <div class="step <?= $currentStep >= 2 ? ($currentStep == 2 ? 'active' : 'done') : ''; ?>">
+                    <div class="circle">2</div>
+                    <div class="label">Barang Dikirimkan</div>
+                </div>
+
+                <div class="step <?= $currentStep == 3 ? 'done' : ''; ?>">
+                    <div class="circle">3</div>
+                    <div class="label">Barang Diterima</div>
+                </div>
+            </div>
+
+            <div class="tracking-status-text">
+                <i class="fas fa-info-circle"></i> <?= $statusText[$statusBarang] ?? 'Status tidak diketahui'; ?>
+            </div>
+
             <div class="info-grid">
                 <div class="info-item">
-                    <span class="info-label">Status</span>
+                    <span class="info-label">Status Pembayaran</span>
                     <span class="status-badge status-<?= $transaksi['status']; ?>">
                         <?= $transaksi['status']; ?>
                     </span>
                 </div>
                 <div class="info-item">
-                    <span class="info-label">Status Barang</span>
-                    <span class="status-barang">
-                        <?= $transaksi['status_barang']; ?>
+                    <span class="info-label">Status Pengiriman</span>
+                    <span class="<?= $statusClassMap[$statusBarang] ?? 'status-barang-diproses'; ?>">
+                        <?= $statusLabelMap[$statusBarang] ?? ucfirst($statusBarang); ?>
                     </span>
                 </div>
                 <div class="info-item">
@@ -217,7 +367,7 @@
             </table>
 
             <a href="/transaksi-saya" class="btn-back">
-                ← Kembali ke Riwayat
+                <i class="fas fa-arrow-left"></i> Kembali ke Riwayat
             </a>
         </div>
     </div>
