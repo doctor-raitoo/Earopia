@@ -134,13 +134,42 @@
     .payment-info strong {
         display: block;
         color: #0a2a3a;
-        margin-bottom: 10px;
+        margin-bottom: 15px;
+        font-size: 16px;
     }
 
-    .payment-info p {
-        color: #00a8ff;
-        font-weight: 600;
-        margin: 5px 0;
+    .payment-method {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 10px 0;
+        border-bottom: 1px solid #d4e4f0;
+    }
+
+    .payment-method:last-child {
+        border-bottom: none;
+    }
+
+    .payment-method img {
+        width: 32px;
+        height: 32px;
+        object-fit: contain;
+    }
+
+    .method-details {
+        flex: 1;
+    }
+
+    .method-name {
+        font-weight: 700;
+        color: #0a2a3a;
+        font-size: 14px;
+    }
+
+    .method-number {
+        font-size: 12px;
+        color: #6a8a9a;
+        font-family: monospace;
     }
 
     .file-input {
@@ -182,13 +211,20 @@
         .total-section h3 span {
             font-size: 24px;
         }
+        
+        .payment-method img {
+            width: 28px;
+            height: 28px;
+        }
     }
 </style>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
 <div class="checkout-container">
     <div class="checkout-card">
         <div class="checkout-header">
-            <h2>Checkout <span>Earopia</span></h2>
+            <h2>Checkout <span>Items</span></h2>
         </div>
 
         <div class="cart-items">
@@ -222,7 +258,7 @@
             <div class="form-group">
                 <label>Metode Pembayaran</label>
                 <select name="metode_pembayaran" required>
-                    <option value="">-- Pilih Metode Pembayaran --</option>
+                    <option value="">Pilih Metode Pembayaran</option>
                     <option value="BCA">Transfer Bank BCA</option>
                     <option value="BRI">Transfer Bank BRI</option>
                     <option value="DANA">DANA</option>
@@ -231,10 +267,39 @@
             </div>
 
             <div class="payment-info">
-                <strong>Informasi Pembayaran</strong>
-                <p>BCA: 1234567890 a.n Earopia Store</p>
-                <p>BRI: 0987654321 a.n Earopia Store</p>
-                <p>DANA / OVO: 08123456789 a.n Earopia Store</p>
+                <strong><i class="fas fa-info-circle"></i> Informasi Pembayaran</strong>
+                
+                <div class="payment-method">
+                    <img src="<?= base_url('uploads/logo_bca.png') ?>" alt="BCA">
+                    <div class="method-details">
+                        <div class="method-name">Bank BCA</div>
+                        <div class="method-number">1234567890 a.n Earopia Store</div>
+                    </div>
+                </div>
+
+                <div class="payment-method">
+                    <img src="<?= base_url('uploads/logo_bri.png') ?>" alt="BRI">
+                    <div class="method-details">
+                        <div class="method-name">Bank BRI</div>
+                        <div class="method-number">1234567890 a.n Earopia Store</div>
+                    </div>
+                </div>
+
+                <div class="payment-method">
+                    <img src="<?= base_url('uploads/logo_dana.png') ?>" alt="DANA">
+                    <div class="method-details">
+                        <div class="method-name">DANA</div>
+                        <div class="method-number">08123456789 a.n Earopia Store</div>
+                    </div>
+                </div>
+
+                <div class="payment-method">
+                    <img src="<?= base_url('uploads/logo_ovo.png') ?>" alt="OVO">
+                    <div class="method-details">
+                        <div class="method-name">OVO</div>
+                        <div class="method-number">08123456789 a.n Earopia Store</div>
+                    </div>
+                </div>
             </div>
 
             <div class="form-group">

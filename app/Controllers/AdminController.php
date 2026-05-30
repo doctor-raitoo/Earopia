@@ -17,17 +17,21 @@ class AdminController extends BaseController
         $userModel = new \App\Models\UserModel();
 
         $totalTransaksi = $transaksiModel->countAll();
+        $totalProduk = $produkModel->countAll();
+        $totalUser = $userModel->countAll();
 
         $totalPendapatan = $transaksiModel
-            ->selectSum('total')
             ->where('status', 'dibayar')
+            ->selectSum('total')
             ->first()['total'] ?? 0;
 
-        $totalProduk = $produkModel->countAll();
+        $today = date('Y-m-d');
 
-        $totalUser = $userModel
-            ->where('role', 'user')
-            ->countAllResults();
+        $pendapatanHariIni = $transaksiModel
+            ->where('status', 'dibayar')
+            ->where('DATE(tanggal)', $today)
+            ->selectSum('total')
+            ->first()['total'] ?? 0;
 
         $grafik = $transaksiModel
             ->select("DATE(tanggal) as tgl, COUNT(*) as jumlah")
@@ -40,7 +44,8 @@ class AdminController extends BaseController
             'totalPendapatan' => $totalPendapatan,
             'totalProduk' => $totalProduk,
             'totalUser' => $totalUser,
-            'grafik' => $grafik
+            'grafik' => $grafik,
+            'pendapatanHariIni' => $pendapatanHariIni
         ]);
     }
     public function transaksi()

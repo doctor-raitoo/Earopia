@@ -23,6 +23,7 @@
     ?>
 
     <style>
+
         * {
             margin: 0;
             padding: 0;
@@ -172,6 +173,7 @@
                 padding-top: 110px;
             }
         }
+
     </style>
 </head>
 <body>

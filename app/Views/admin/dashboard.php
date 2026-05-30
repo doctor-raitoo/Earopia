@@ -132,6 +132,13 @@ body {
     <div class="cards">
         <div class="card">
             <div class="icon">
+                <i class="fas fa-coins"></i>
+            </div>
+            <h3>Pendapatan Hari Ini</h3>
+            <h2>Rp <?= number_format($pendapatanHariIni,0,',','.'); ?></h2>
+        </div>
+        <div class="card">
+            <div class="icon">
                 <i class="fas fa-shopping-cart"></i>
             </div>
             <h3>Total Transaksi</h3>
@@ -152,14 +159,6 @@ body {
             </div>
             <h3>Total Produk</h3>
             <h2><?= $totalProduk; ?></h2>
-        </div>
-
-        <div class="card">
-            <div class="icon">
-                <i class="fas fa-users"></i>
-            </div>
-            <h3>Total User</h3>
-            <h2><?= $totalUser; ?></h2>
         </div>
     </div>
 

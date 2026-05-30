@@ -343,6 +343,15 @@ $statusLabelMap = [
                     <span class="info-label">Total Belanja</span>
                     <span class="info-value">Rp <?= number_format($transaksi['total'],0,',','.'); ?></span>
                 </div>
+                <div class="info-item" style="grid-column: span 3;">
+                    <span class="info-label">
+                        <i class="fas fa-map-marker-alt"></i>
+                        Alamat Pengiriman
+                    </span>
+                    <span class="info-value" style="font-weight: 500;">
+                        <?= esc($transaksi['alamat'] ?? '-'); ?>
+                    </span>
+                </div>
             </div>
 
             <table class="detail-table">
